@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP2 r312 Développement front et intégration - Mathos Liegeon</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="json.png" type="image/x-icon">
 </head>
 <body>
     <header>
@@ -27,7 +28,7 @@
     
         <div id="image-container1" class="image-container">
             <figure>
-              <img src="chemin/vers/image.jpg" alt="Description de l'image">
+              <!-- <img src="chemin/vers/image.jpg" alt="Description de l'image"> -->
               <figcaption>Légende de l'image</figcaption>
             </figure>
           </div>
@@ -40,7 +41,7 @@
     
         <div id="image-container2" class="image-container">
             <figure>
-              <img src="chemin/vers/image.jpg" alt="Description de l'image">
+              <!-- <img src="chemin/vers/image.jpg" alt="Description de l'image"> -->
               <figcaption>Légende de l'image</figcaption>
             </figure>
           </div>
@@ -54,6 +55,44 @@
         
         const data = await response.json();
         console.log(data)
+
+        const plot = Plot.plot({
+              x: { grid: true, label: "droitier & gauchers" },
+              y: { label: "total" },
+              title: "Nombre de droitiers et gauchers dans les gagnants",
+              subtitle:
+                "",
+              marginLeft: 100,
+              marginBottom: 50,
+              marks: [
+                Plot.barX(
+                  data,
+                  Plot.groupY({ x: "count" }, { y: "WINNER_LEFT_OR_RIGHT_HANDED", tip: true, sort:{y:"x", reverse:true,             limit:10 }})    ),
+                Plot.ruleX([0])
+              ]
+            });
+
+        const div = document.querySelector("#image-container1");
+        div.append(plot);
+
+        const plot2 = Plot.plot({
+            color: { legend: true },
+            title: "Evolution des gains du vainqueur au grand chelem",
+            subtitle:
+              "Evolution des gains du vainqueur en euros pour chaque tournoi du grand chelem de 1968 a 2023",
+            marginLeft: 100,
+            marks: [
+              Plot.lineY(data, {
+                x: "YEAR",
+                y: "WINNER_PRIZE",
+                stroke: "TOURNAMENT",
+                tip: true
+              })
+            ]
+        })
+
+        const div2 = document.querySelector("#image-container2");
+        div2.append(plot2);
 
     </script>
 
