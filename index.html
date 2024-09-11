@@ -13,11 +13,67 @@
         </h1>
         <ul>
             <li>
-                <a href="figure1.html">Figure 1</a>
+                <a href="#image-container1">Figure 1</a>
             </li>
-            <li><a href="figure2.html">Figure 2</a>
+            <li><a href="#image-container2">Figure 2</a>
             </li>
         </ul>
     </header>
+
+    <div>
+        <h2>Figure 1</h2>
+        <h4>Graphique fun</h4>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam molestias itaque aspernatur vel aperiam ea quas nam soluta dolores, laudantium consectetur eius? Sint architecto nemo sunt ea, voluptatibus facere optio.</p>
+    
+        <div id="image-container1" class="image-container">
+            <figure>
+              <img src="chemin/vers/image.jpg" alt="Description de l'image">
+              <figcaption>Légende de l'image</figcaption>
+            </figure>
+          </div>
+    </div>
+
+    <div>
+        <h2>Figure 2</h2>
+        <h4>Graphique cool</h4>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam molestias itaque aspernatur vel aperiam ea quas nam soluta dolores, laudantium consectetur eius? Sint architecto nemo sunt ea, voluptatibus facere optio.</p>
+    
+        <div id="image-container2" class="image-container">
+            <figure>
+              <img src="chemin/vers/image.jpg" alt="Description de l'image">
+              <figcaption>Légende de l'image</figcaption>
+            </figure>
+          </div>
+    </div>
+
+    <script type="module">
+
+        import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+        const response = await fetch('tennisdata.json');
+        
+        const data = await response.json();
+        console.log(data)
+
+    </script>
+
+    <!-- <script>
+        
+        async function loadJSONData() {
+            try {
+                const response = await fetch('tennisdata.json');
+
+                const data = await response.json();
+                console.log(data)
+
+            }
+            catch(e) {
+                console.log(e)
+            }
+        };
+        loadJSONData()
+
+    </script> -->
+
 </body>
 </html>
