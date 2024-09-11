@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP2 r312 Développement front et intégration - Mathos Liegeon</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="json.png" type="image/x-icon">
+    <link rel="icon" href="logo.jpg" type="image/x-icon">
 </head>
 <body>
     <header>
@@ -21,10 +21,10 @@
         </ul>
     </header>
 
-    <div>
+    <div class="content">
         <h2>Figure 1</h2>
         <h4>Graphique fun</h4>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam molestias itaque aspernatur vel aperiam ea quas nam soluta dolores, laudantium consectetur eius? Sint architecto nemo sunt ea, voluptatibus facere optio.</p>
+        <p>Les tournois du Grand Chelem en tennis ont vu une majorité de joueurs droitiers triompher au fil des années. Cependant, les gauchers ont également laissé leur marque de manière significative. Parmi les plus grands champions de l'histoire, on trouve des gauchers emblématiques comme Rod Laver, Jimmy Connors et Rafael Nadal. Nadal en particulier se distingue avec ses 22 titres du Grand Chelem, dont 14 à Roland-Garros. Bien que les droitiers restent plus nombreux parmi les vainqueurs, les gauchers ont souvent eu un impact disproportionné par rapport à leur nombre, grâce à leurs angles de frappe uniques et leur jeu atypique qui peut déstabiliser les adversaires. Cette diversité entre droitiers et gauchers a contribué à enrichir l'histoire et la dynamique du tennis au plus haut niveau.</p>
     
         <div id="image-container1" class="image-container">
             <figure>
@@ -34,10 +34,13 @@
           </div>
     </div>
 
-    <div>
+    <div class="content">
         <h2>Figure 2</h2>
         <h4>Graphique cool</h4>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam molestias itaque aspernatur vel aperiam ea quas nam soluta dolores, laudantium consectetur eius? Sint architecto nemo sunt ea, voluptatibus facere optio.</p>
+        <p>L'évolution des gains du vainqueur au Grand Chelem a connu une augmentation spectaculaire au cours des dernières décennies. En 2001, le vainqueur de Roland-Garros, Gustavo Kuerten, recevait 646 000 euros. En comparaison, en 2019, Rafael Nadal a empoché 2,3 millions d'euros pour sa victoire sur la terre battue parisienne, soit une multiplication par plus de 3,5 en moins de 20 ans.
+            Cette tendance à la hausse s'observe dans tous les tournois du Grand Chelem. Les raisons de cette augmentation sont multiples : la popularité croissante du tennis, l'augmentation des revenus générés par les droits de diffusion et les sponsors, ainsi que la pression des joueurs pour une meilleure répartition des bénéfices.
+            Il est important de noter que cette augmentation ne concerne pas uniquement les vainqueurs. Les prize money pour les premiers tours et les qualifications ont également connu des hausses significatives, dans le but de mieux rémunérer un plus grand nombre de joueurs professionnels.
+            Malgré une baisse ponctuelle en 2020 due à la pandémie de COVID-19, la tendance générale reste à la hausse. Cette évolution reflète non seulement la santé économique du tennis professionnel, mais aussi les efforts pour rendre le sport plus équitable financièrement pour un plus grand nombre de joueurs.</p>
     
         <div id="image-container2" class="image-container">
             <figure>
@@ -47,72 +50,70 @@
           </div>
     </div>
 
-    <script type="module">
-
-        import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
-
-        const response = await fetch('tennisdata.json');
-        
-        const data = await response.json();
-        console.log(data)
-
-        const plot = Plot.plot({
-              x: { grid: true, label: "droitier & gauchers" },
-              y: { label: "total" },
-              title: "Nombre de droitiers et gauchers dans les gagnants",
-              subtitle:
-                "",
-              marginLeft: 100,
-              marginBottom: 50,
-              marks: [
-                Plot.barX(
-                  data,
-                  Plot.groupY({ x: "count" }, { y: "WINNER_LEFT_OR_RIGHT_HANDED", tip: true, sort:{y:"x", reverse:true,             limit:10 }})    ),
-                Plot.ruleX([0])
-              ]
-            });
-
-        const div = document.querySelector("#image-container1");
-        div.append(plot);
-
-        const plot2 = Plot.plot({
-            color: { legend: true },
-            title: "Evolution des gains du vainqueur au grand chelem",
-            subtitle:
-              "Evolution des gains du vainqueur en euros pour chaque tournoi du grand chelem de 1968 a 2023",
-            marginLeft: 100,
-            marks: [
-              Plot.lineY(data, {
-                x: "YEAR",
-                y: "WINNER_PRIZE",
-                stroke: "TOURNAMENT",
-                tip: true
-              })
-            ]
-        })
-
-        const div2 = document.querySelector("#image-container2");
-        div2.append(plot2);
-
-    </script>
-
-    <!-- <script>
-        
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6"></script>
+    <script>
         async function loadJSONData() {
             try {
                 const response = await fetch('tennisdata.json');
-
-                const data = await response.json();
-                console.log(data)
-
+                return await response.json();
+            } catch(e) {
+                console.error('Erreur lors du chargement des données:', e);
+                return null;
             }
-            catch(e) {
-                console.log(e)
+        }
+    
+        async function createPlots() {
+            const data = await loadJSONData();
+            if (!data) {
+                console.error('Impossible de charger les données');
+                return;
             }
-        };
-        loadJSONData()
+    
+            const plot = Plot.plot({
+                x: { grid: true, label: "droitier & gauchers" },
+                y: { label: "total" },
+                title: "Nombre de droitiers et gauchers dans les gagnants",
+                subtitle: "",
+                marginLeft: 100,
+                marginBottom: 50,
+                marks: [
+                    Plot.barX(
+                        data,
+                        Plot.groupY({ x: "count" }, { y: "WINNER_LEFT_OR_RIGHT_HANDED", tip: true, sort: {y: "x", reverse: true, limit: 10} })
+                    ),
+                    Plot.ruleX([0])
+                ]
+            });
+    
+            const div = document.querySelector("#image-container1");
+            div.append(plot);
+    
+            const plot2 = Plot.plot({
+                color: { legend: true },
+                title: "Evolution des gains du vainqueur au grand chelem",
+                subtitle: "Evolution des gains du vainqueur en euros pour chaque tournoi du grand chelem de 1968 a 2023",
+                marginLeft: 100,
+                marks: [
+                    Plot.lineY(data, {
+                        x: "YEAR",
+                        y: "WINNER_PRIZE",
+                        stroke: "TOURNAMENT",
+                        tip: true
+                    })
+                ]
+            });
+    
+            const div2 = document.querySelector("#image-container2");
+            div2.append(plot2);
+        }
+    
+        createPlots();
+    </script>
 
-    </script> -->
+    <footer>
+        <p>© Liegeon Mathis - Tous droits réservés</p>
+    </footer>
 
 </body>
 </html>

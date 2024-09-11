@@ -2,11 +2,67 @@
     margin: 20px;
     max-width: 1000px;
     max-height: 800px;
-    background-color: aquamarine;
+    background-color: rgb(207, 112, 64);
+    border-radius: 20px;
+    padding: 20px;
     align-self: center;
     justify-self: center;
 }
 
 html {
     scroll-behavior: smooth;
+}
+
+body {
+    background-color: rgb(28, 106, 28);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+li {
+    padding: 0.5rem 1rem;
+    background: whitesmoke;
+    border-radius: 2rem;
+}
+
+li:hover {
+    scale: 1.1;
+    transition: all ease-in-out 300ms;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    align-items: center;
+}
+
+.content {
+    border: solid white;
+    border-radius: 5rem;
+    padding: 2rem;
+    margin: 2rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+footer {
+    width: 100vw;
+    text-align: center;
 }
